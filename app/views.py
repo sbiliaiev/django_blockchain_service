@@ -1,14 +1,15 @@
+import os
 import datetime
 import json
 
 import requests
-from flask import render_template, redirect, request
 
-from app import app
+from flask import redirect, render_template, request
+from server import app
 
 # The node with which our application interacts, there can be multiple
 # such nodes as well.
-CONNECTED_NODE_ADDRESS = "http://127.0.0.1:8000"
+CONNECTED_NODE_ADDRESS = os.environ.get('NODE_HOST')
 
 posts = []
 
@@ -41,7 +42,7 @@ def index():
                            title='YourNet: Decentralized '
                                  'content sharing',
                            posts=posts,
-                           node_address=CONNECTED_NODE_ADDRESS,
+                           node_address=CONNECTED_NODE_ADDRESS, # FIXME: change to docker address to local machine 
                            readable_time=timestamp_to_string)
 
 

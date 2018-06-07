@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  node:
+    restart: always
+    build: ./node
+    command: flask run --host 0.0.0.0 --port 5000
+    ports:
+      - "5000:5000"
+    environment:
+      FLASK_DEBUG: 1
+  app:
+    restart: always
+    build: ./app
+    command: flask run --host 0.0.0.0 --port 5000
+    environment:
+      NODE_HOST: http://node:5000
+      FLASK_DEBUG: 1
+    depends_on:
+      - node
+    ports:
+      - "80:5000"
