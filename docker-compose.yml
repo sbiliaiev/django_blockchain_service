@@ -1,6 +1,14 @@
 version: '3'
 
 services:
+  db:
+    restart: always
+    container_name: postgres
+    image: postgres:9.5.13-alpine
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=qwerty123
+      - POSTGRES_DB=device_data
   node:
     restart: always
     build: ./node
@@ -20,3 +28,12 @@ services:
       - node
     ports:
       - "80:5000"
+  django:
+    restart: always
+    build: ./dj_app
+    depends_on:
+      - db
+    ports:
+      - "8080:8000"
+    environment:
+      - DB_URI=postgres://root:qwerty123@db:5432/device_data
